@@ -1,0 +1,73 @@
+/* General Styles */
+body {
+    background-color: #111;
+    color: rgba(235, 230, 230, 0.8);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: #f0f0f0;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+h3 {
+    color: #ddd;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+form {
+    display: inline-block;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 8%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+textarea {
+    width: 90%;
+    height: 50px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    resize: none;
+}
+
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+button {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 14px;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background-color: #006f8e;
+}
+
+#heading {
+    margin-bottom: 20px;
+}

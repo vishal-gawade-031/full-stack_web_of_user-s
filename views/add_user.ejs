@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <form class="form" method="post" action="/user_in_db">
+            <h1>Join us</h1>
+          <h3>Enter username</h3>
+            <input type="text" id="username" name="username" required>
+
+           <h3>Enter Gmail</h3>
+            <input type="email" id="email" name="email" required>
+
+            <h3>Enter password</h3>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Submit</button>
+            </form>
+            <!-- <form method="post" action="/user_in_db"><button type="submit">Submit</button>
+           </form> -->
+       
+    </div>
+</body>
+</html>

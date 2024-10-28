@@ -1,0 +1,59 @@
+/* General Styles */
+body {
+    background-color: #111;
+    color: rgba(235, 230, 230, 0.8);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 50px 20px;
+}
+
+h1 {
+    color: #fafafa;
+    font-size: 32px;
+    margin-bottom: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+form {
+    display: inline-block;
+    background-color: #222;
+    margin-top: 5vh;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: slideIn 2s ease-in-out;
+}
+
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    animation: pulseInput 2s infinite;
+}
+
+button {
+    background-color: #f44336;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+    transition: transform 0.2s ease-in-out;
+    animation: shakeButton 1.5s infinite;
+}
+
+button:hover {
+    background-color: #d32f2f;
+    transform: scale(1.1);
+}
+
+/* Animations */

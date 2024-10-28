@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit username</title>
+    <link rel="stylesheet" href="/styles/style_edit.css">
+</head>
+<body>
+    <h2 id="heading">You are Above to Edit this Username <%= user.email %></h2>
+           <form method="post"  action="/user/<%= user.id %>/update?_method=PATCH">
+                <textarea name="username"> <%=user.username%></textarea>
+                     <h3>Enter your Password to Change Username </h3>
+                             <input type="password" name="password" placeholde="enter  your password">
+    
+                                         <button id="edit">Edit</button>
+    </form>
+</body>
+</html>

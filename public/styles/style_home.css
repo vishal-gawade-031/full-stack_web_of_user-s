@@ -1,0 +1,74 @@
+/* General Styles */
+body {
+    background-color: #111;
+    color: rgba(235, 230, 230, 0.8);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 50px 20px;
+    margin-top: 15vh;
+}
+
+h1 {
+    color: #f0f0f0;
+    font-size: 36px;
+    /* margin-bottom: 20px; */
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.count {
+    color: #ddd;
+    font-size: 24px;
+    margin-bottom: 40px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+form {
+    display: inline-block;
+}
+
+button {
+    background-color: #008CBA;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    animation: pulse 2s infinite;
+    box-shadow: 0 4px 8px rgba(0, 140, 186, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #006f8e;
+    transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+form{
+    margin-left: 2vw;
+}

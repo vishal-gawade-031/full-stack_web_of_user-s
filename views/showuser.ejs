@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shwo user's</title>
+    <!-- <style>
+        table,th,td{
+            border: 1px solid rgb(255, 254, 254);
+        }
+        body{
+            background-color: #111;
+            color: rgba(235, 230, 230, 0.596);
+        }
+    </style> -->
+    <link rel="stylesheet" href="/styles/style_showuser.css">
+</head>
+<body>
+    <table>
+        <th>ID</th>
+        <th>username</th>
+        <th>Gmail</th>
+
+        <%for(usr of user){%>
+            <tr>
+                <td><%=usr.id %></td>         
+                <td><%= usr.username %></td>
+                <td><%= usr.email %></td>
+
+                <td>
+                    <form  method="GET" action="/user/<%=usr.id %>/edit">
+                    <button>edit username</button>
+                </form>
+                </td>
+                <td> 
+                     <form method="post" action="/user/<%=usr.id%>/delete?_method=delete">
+                    <button id="del">delete</button>
+                </form>
+                </td>
+                
+            </tr>
+        
+        <% } %>
+    </table>
+</body>
+</html>

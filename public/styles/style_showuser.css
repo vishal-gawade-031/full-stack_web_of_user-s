@@ -1,0 +1,62 @@
+/* General Styles */
+body {
+    background-color: #111;
+    color: rgba(235, 230, 230, 0.596);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #111;
+    color: rgba(235, 230, 230, 0.8);
+}
+
+th, td {
+    border: 1px solid rgb(255, 254, 254);
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #1111113b;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+td {
+    background-color: #444;
+}
+
+tr:hover {
+    background-color: #555;
+}
+
+/* Button Styles */
+button {
+    background-color: #008CBA; /* Blue */
+    color: white;
+    padding: 8px 16px;
+    margin: 4px 2px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #006f8e;
+}
+
+/* Form Styles */
+form {
+    display: inline;
+}
+#del{
+    background-color: rgba(233, 13, 13, 0.767);
+}
