@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- font icon cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/styles/postpage.css">
+</head>
+<body>
+  <div class="topbar">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/perplexity-color.png" alt="image"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="/user/newpost">Add new Post</a>
+              <a class="nav-link currname" href="#"><%= currUser.username %></a>
+              <a class="nav-link" href="/logout">logout</a>
+            
+            </div>
+          </div>
+        </div>
+      </nav>
+  </div>
+    <div class="container">
+        <h2 class="text-center mb-4">Thoughts of the day</h2>
+        <% for (let user of Alluser) { %>
+            <p class="username"><%= user.username %></p>
+            <p class="message"> <%= user.message %></p>
+
+            <form method="get" action="/user/delete">
+                <button class="btn btn-custom"><i class="fa-regular fa-heart"></i>&nbsp;Like</button>
+                <button class="btn btn-danger">Delete</button></form>
+            <hr>
+        <% } %>
+    </div>
+    
+    <script>
+      let btns = document.querySelectorAll(".btn-custom i");
+      btns.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          btn.style.backgroundColor = "red";
+          btn.style.overflow = "hidden";
+          btn.style.borderRadius = "2rem 4rem 14rem 14rem"; // Corrected spelling and value
+
+        });
+      });
+      
+    </script>
+</body>
+</html>

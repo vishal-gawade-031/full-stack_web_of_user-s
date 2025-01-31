@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="/styles/style_delete.css">
 </head>
 <body>
-    <h1>Your are trying to delete user id = <%=user.id%></h1>
-    <form method="post" action="/user/delete/deleted?_method=delete">
+    <h1>Your are trying to delete user = <%=user.username%></h1>
+    <form method="post" action="/user/delete/record">
     <input type="password" name="newpassword" placeholder="enter your password" required>
     <button>delete account</button>
 </form>
