@@ -10,8 +10,13 @@ body {
     background:whitesmoke;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+
     margin-top: 10% !important;
+    box-shadow: 0px 14px 66px rgba(118, 209, 240, 0.8) !important; /* Light blue shadow */
+    border-radius: 10px in !important; /* Optional: Rounded corners */
+    padding: 20px !important; /* Adds space inside the container */
+    background-color: #fff; /* Ensures contrast */
+      
 }
 
 .username {
@@ -60,4 +65,8 @@ body {
 .navbar-brand img{
     height: 6%;
     width: 4%;
+}
+.box{
+    display: flex !important;
+    margin-right: 3px;
 }

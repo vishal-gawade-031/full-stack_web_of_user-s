@@ -17,7 +17,7 @@
   <div class="topbar">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#"><img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/perplexity-color.png" alt="image"></a>
+          <a class="navbar-brand" href="#"><i class="fa-solid fa-eye"></i></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -38,9 +38,15 @@
             <p class="username"><%= user.username %></p>
             <p class="message"> <%= user.message %></p>
 
+            <div class="box">
+            <button class="btn btn-custom"><i class="fa-regular fa-heart"></i>&nbsp;Like</button>
+
+           <%if(user.username == currUser.username){%>
             <form method="get" action="/user/delete">
-                <button class="btn btn-custom"><i class="fa-regular fa-heart"></i>&nbsp;Like</button>
-                <button class="btn btn-danger">Delete</button></form>
+                <button class="btn btn-danger">Delete</button>
+              </form>
+            <% } %>
+                </div>
             <hr>
         <% } %>
     </div>

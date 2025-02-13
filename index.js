@@ -17,6 +17,7 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
+const { userInfo } = require("os");
 
 
 // Session Middleware
@@ -57,8 +58,8 @@ app.get("/login",(req,res)=>{
 
 // Example route
 app.get('/user/postpage', (req, res) => {
-  if (!req.user) return res.redirect('/'); // Protect route
-  console.log(`Welcome, ${res.locals.currUser.username}`);
+if (!req.session.currUser) return res.redirect('/login');
+
 
   try{
     let q=`select * from user`;
@@ -164,10 +165,17 @@ app.get("/user/add_new_user",(req,res)=>{
 //add the user to database
 app.post("/user_in_db",(req,res)=>{
   let {username,email,password,password2}=req.body;
+  console.log("line 167 user info ",username,email,password,password2);
+  console.log("line no 167")
+  let usserInfo={username,email,password,password2}
+  req.session.currUser=usserInfo;
+  console.log("line no 171",req.session.currUser);
+
   if (password !== password2) {
     res.send("Both passwords are not the same");
     return;
   }
+  let currUser=req.session.currUser;
   
   //console.log(name,gmail,password);
   let id=faker.string.uuid();
@@ -178,7 +186,18 @@ app.post("/user_in_db",(req,res)=>{
       if(err)throw err;
      
     console.log(result);
-   res.redirect("/user");
+    try{
+      let q=`select * from user`;
+      connection.query(q,(err,Alluser)=>{
+        if(err)throw err;
+        console.log(Alluser);
+      res.render("postPage.ejs",{Alluser,currUser});  
+      });
+    }
+      catch(err){
+        console.log("err");
+        res.send("there is an err in the database");
+      }
     }
     catch(err){
       if(err.code == 'ER_DUP_ENTRY'){
@@ -193,6 +212,7 @@ app.post("/user_in_db",(req,res)=>{
 
 //print user 
 app.get("/user",(req,res)=>{
+
   try{
     let q=`select * from user`;
     connection.query(q,(err,user)=>{
@@ -218,7 +238,7 @@ app.get("/user/:id/edit",(req,res)=>{
     connection.query(q,(err,result)=>{
       if(err)throw err;
       let user=result[0];
-      console.log(user);
+      // console.log(user);
     res.render("edit.ejs",{user});  
     });
   }
@@ -321,22 +341,23 @@ app.get("/user/message/:message", (req, res) => {
   console.log("Current User in session:", req.session.currUser);
 
   let user = req.session.currUser;
-  
+  console.log("line no 344",user);
   // Check if the user is logged in
   if (!user) {
-      return res.status(401).send("User not logged in");
+      return res.status(401).send("re login");
   }
 
   // Query to find user in the database by user ID
   let qd = "SELECT * FROM user WHERE id = ?";
   
   connection.query(qd, [user.id], (err, result) => {
+    console.log(result);
       if (err) {
           console.error("Database error:", err);
           return res.send("Error retrieving user data");
       }
 
-      if (result.length > 0) {
+      if (user.length > 0) {
           let userId = result[0].id; // Retrieve the user ID
           console.log("User ID:", userId);
 
@@ -351,7 +372,8 @@ app.get("/user/message/:message", (req, res) => {
 
               // console.log("Message updated successfully:", updateResult);
               // res.send("msg has added");
-              res.send("message added to your profile");
+          
+              res.send("Message updated successfully");
 
 
           });
@@ -377,18 +399,34 @@ app.post("/user/postpage",async (req,res)=>{
       res.send("there is an err in the database");
     }
 })
+app.get("/user/postpage",async (req,res)=>{
+  try{
+    let q=`select * from user`;
+    connection.query(q,(err,Alluser)=>{
+      if(err)throw err;
+     // console.log(Alluser);
+    res.render("postPage.ejs",{Alluser});  
+    });
+  }
+    catch(err){
+      console.log("err");
+      res.send("there is an err in the database");
+    }
+})
 
 //delete rout
 app.get("/user/delete",(req,res)=>{
   let user = req.session.currUser;
   console.log("info of user",user);
-  res.render("delete.ejs",{user});
+
+   res.render("delete.ejs",{user});
 })
 
-//check password
+// //check password
 app.post("/user/delete/record",(req,res)=>{
   let passwordComming=req.body.newpassword;
   console.log("comming password",passwordComming);
+  
   let curruser = req.session.currUser;
   console.log("the password in db",curruser.password);
   if(curruser.password !== passwordComming){

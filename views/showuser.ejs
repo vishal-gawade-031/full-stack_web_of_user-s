@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/styles/style_showuser.css">
 </head>
 <body>
+    <form method="post" action="/user/postpage"> <button type="submit">main page</button></form>
     <table>
         <th>ID</th>
         <th>username</th>
@@ -28,13 +29,13 @@
                 <td><%= usr.email %></td>
 
                 <td>
-                    <form  method="GET" action="/user/<%=usr.id %>/edit">
-                    <button>edit username</button>
+                    <!-- <form  method="GET" action="/user/<%=usr.id %>/edit">
+                    <button>edit username</button> -->
                 </form>
                 </td>
                 <td> 
-                     <form method="post" action="/user/<%=usr.id%>/delete?_method=delete">
-                    <button id="del">delete</button>
+                     <!-- <form method="post" action="/user/delete/deleted/delete?_method=delete">
+                    <button id="del">delete</button> -->
                 </form>
                 </td>
                 
