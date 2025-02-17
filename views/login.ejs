@@ -16,6 +16,14 @@
         <h2 class="text-center">Login</h2>
         <form action="/login" method="POST">
             <div class="mb-3">
+                <% if (error_msg.length > 0) { %>
+                    <div class="alert alert-danger">
+                      <%= error_msg %>
+                    </div>
+                  <% }  else{ %>
+                  
+                            <%= success_msg %>
+                 <% } %>  
                 
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>

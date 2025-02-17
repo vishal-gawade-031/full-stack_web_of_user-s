@@ -18,6 +18,25 @@
     </style>
 </head>
 <body>
+    <div class="topbar">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#"><i class="fa-solid fa-eye"></i></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                  <a class="nav-link active" aria-current="page" href="/user/newpost">Add new Post</a>
+                  <a class="nav-link currname" href="#"><%= currUser.username %></a>
+                  <a class="nav-link" href="/logout">logout</a>
+                  <div class="nav-link ms-auto account" action="/user/account" method="get" >Account</div>
+                </div>
+              </div>
+            
+            </div>
+          </nav>
+      </div>
 
 <div class="container mt-5">
     <div class="card p-4 shadow">

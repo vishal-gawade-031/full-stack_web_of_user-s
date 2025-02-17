@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
+    
     <div class="container">
         <form class="form" method="post" action="/user_in_db">
             <h1>Join us</h1>
+
+           <h4> <% if(error_msg){ %>
+                <%= error_msg %>
+            <% } %> </h4>
+
           <h3>Enter username</h3>
             <input type="text" id="username" name="username" required>
 

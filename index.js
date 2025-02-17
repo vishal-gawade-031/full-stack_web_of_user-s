@@ -32,7 +32,14 @@ app.use(session({
   }
 }));
 
+
 app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success");
+  res.locals.error_msg = req.flash("error");
+  next();
+});
 
 
 const connection = mysql.createConnection({
@@ -59,14 +66,15 @@ app.get("/login",(req,res)=>{
 // Example route
 app.get('/user/postpage', (req, res) => {
 if (!req.session.currUser) return res.redirect('/login');
-
+console.log("it is in currUser is = ",req.session.currUser)
+let currUser=req.session.currUser;
 
   try{
     let q=`select * from user`;
     connection.query(q,(err,Alluser)=>{
       if(err)throw err;
-      console.log(Alluser);
-    res.render("postPage.ejs",{Alluser});  
+     // console.log(Alluser);
+    res.render("postPage.ejs",{Alluser,currUser});  
     });
   }
     catch(err){
@@ -99,7 +107,7 @@ app.use((req, res, next) => {
         if (result.length === 0) {
             // User does not exist
             console.log("User does not exist");
-            req.flash( 'User not found');
+            req.flash( "error",'User not found');
             return res.redirect("/login");
         }
 
@@ -120,7 +128,7 @@ app.use((req, res, next) => {
               let q=`select * from user`;
               connection.query(q,(err,Alluser)=>{
                 if(err)throw err;
-                console.log(Alluser);
+               // console.log(Alluser);
               res.render("postPage.ejs",{Alluser});  
               });
             }
@@ -132,7 +140,8 @@ app.use((req, res, next) => {
         }
         else {
             console.log("Incorrect password");
-          
+        
+            req.flash( "error",'Incorrect password');
             return res.redirect("/login"); // Redirect back to login if password is incorrect
         }
     });
@@ -162,17 +171,18 @@ app.get("/user/add_new_user",(req,res)=>{
   res.render("add_user.ejs");
 });
 
-//add the user to database
+//signup
 app.post("/user_in_db",(req,res)=>{
   let {username,email,password,password2}=req.body;
-  console.log("line 167 user info ",username,email,password,password2);
-  console.log("line no 167")
+ // console.log("line 167 user info ",username,email,password,password2);
+ 
   let usserInfo={username,email,password,password2}
   req.session.currUser=usserInfo;
-  console.log("line no 171",req.session.currUser);
+ // console.log("line no 171",req.session.currUser);
 
   if (password !== password2) {
-    res.send("Both passwords are not the same");
+    req.flash("error","Bouth password must be same")
+    res.redirect("/user/add_new_user")
     return;
   }
   let currUser=req.session.currUser;
@@ -185,12 +195,12 @@ app.post("/user_in_db",(req,res)=>{
     try{
       if(err)throw err;
      
-    console.log(result);
+   // console.log(result);
     try{
       let q=`select * from user`;
       connection.query(q,(err,Alluser)=>{
         if(err)throw err;
-        console.log(Alluser);
+       // console.log(Alluser);
       res.render("postPage.ejs",{Alluser,currUser});  
       });
     }
@@ -201,7 +211,9 @@ app.post("/user_in_db",(req,res)=>{
     }
     catch(err){
       if(err.code == 'ER_DUP_ENTRY'){
-        res.status(400).json({message:'duplicate entry on username or email plese try again'});
+        req.flash("error","username must be diffrent")
+        res.redirect("/user/add_new_user")
+       // res.status(400).json({message:'duplicate entry on username or email plese try again'});
       }
       console.log(err);
     }
@@ -341,30 +353,29 @@ app.get("/user/message/:message", (req, res) => {
   console.log("Current User in session:", req.session.currUser);
 
   let user = req.session.currUser;
-  console.log("line no 344",user);
+  console.log("line no 344",user)
   // Check if the user is logged in
   if (!user) {
       return res.status(401).send("re login");
   }
 
   // Query to find user in the database by user ID
-  let qd = "SELECT * FROM user WHERE id = ?";
+  let qd = "SELECT * FROM user WHERE username = ?";
   
-  connection.query(qd, [user.id], (err, result) => {
-    console.log(result);
+  connection.query(qd, [user.username], (err, result) => {
       if (err) {
           console.error("Database error:", err);
           return res.send("Error retrieving user data");
       }
-
-      if (user.length > 0) {
-          let userId = result[0].id; // Retrieve the user ID
-          console.log("User ID:", userId);
+      console.log("line no 358",result)
+      if (result.length > 0) {
+          let username= result[0].username; // Retrieve the user ID
+          console.log("User ID:", username);
 
           // Update the 'message' column for the logged-in user
-            let updateQuery = "UPDATE user SET message = ? WHERE id = ?";
+            let updateQuery = "UPDATE user SET message = ? WHERE username = ?";
           
-          connection.query(updateQuery, [msg, userId], (updateErr, updateResult) => {
+          connection.query(updateQuery, [msg, username], (updateErr, updateResult) => {
               if (updateErr) {
                   // console.error("Error updating message:", updateErr);
                   return res.send("Error saving message");
@@ -372,8 +383,8 @@ app.get("/user/message/:message", (req, res) => {
 
               // console.log("Message updated successfully:", updateResult);
               // res.send("msg has added");
-          
-              res.send("Message updated successfully");
+          res.redirect("/user/postpage")
+            //  res.send("Message updated successfully:");
 
 
           });
@@ -399,20 +410,20 @@ app.post("/user/postpage",async (req,res)=>{
       res.send("there is an err in the database");
     }
 })
-app.get("/user/postpage",async (req,res)=>{
-  try{
-    let q=`select * from user`;
-    connection.query(q,(err,Alluser)=>{
-      if(err)throw err;
-     // console.log(Alluser);
-    res.render("postPage.ejs",{Alluser});  
-    });
-  }
-    catch(err){
-      console.log("err");
-      res.send("there is an err in the database");
-    }
-})
+// app.get("/user/postpage",async (req,res)=>{
+//   try{
+//     let q=`select * from user`;
+//     connection.query(q,(err,Alluser)=>{
+//       if(err)throw err;
+//      // console.log(Alluser);
+//     res.render("postPage.ejs",{Alluser});  
+//     });
+//   }
+//     catch(err){
+//       console.log("err");
+//       res.send("there is an err in the database");
+//     }
+// })
 
 //delete rout
 app.get("/user/delete",(req,res)=>{
@@ -424,22 +435,26 @@ app.get("/user/delete",(req,res)=>{
 
 // //check password
 app.post("/user/delete/record",(req,res)=>{
+  console.log("we are in the line 438")
   let passwordComming=req.body.newpassword;
   console.log("comming password",passwordComming);
   
   let curruser = req.session.currUser;
-  console.log("the password in db",curruser.password);
+  console.log("the lin 442 ",curruser);
   if(curruser.password !== passwordComming){
-    return res.send("Wroung password Try again");
+    req.flash("error","wroung password Try again")
+    return res.redirect("/user/delete");// we have to use flash hear 
   }
-  let Id=curruser.id;
-  let q = `DELETE FROM user WHERE id = ?`;
-  connection.query(q,[Id],(err,result)=>{
+  let usernamee=curruser.username;
+  let msg="";
+  let q = `UPDATE  user SET message = ? WHERE username = ?`;
+    connection.query(q,[msg,usernamee],(err,result)=>{
    
     try
     {
       if(err)throw err;
-     return res.redirect("/login");
+      console.log(result)
+     return res.redirect("/user/postpage");
       //console.log(result);
     }
     catch(err){
@@ -447,6 +462,11 @@ app.post("/user/delete/record",(req,res)=>{
     }
   })
 })
+
+//deleteMsg
+// app.get("/deleteMsg",(req,res)=>{
+// console.log(req.params);
+// })
 //logout session
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -458,6 +478,42 @@ app.get("/logout", (req, res) => {
   });
 });
 
+app.get("/user/account",(req,res)=>{
+  let currUser=req.session.currUser;
+  console.log("account",currUser);
+  res.render("account.ejs",{currUser});
+
+})
+
+
+// accounts forms
+
+app.get("/user/editusername/:name",(req,res)=>{
+  console.log(req.params);
+  res.send("working to editusername");
+})
+
+
+app.get("/user/addgmail/:name",(req,res)=>{
+  console.log(req.params);
+  res.send("working to user gmail");
+})
+
+app.get("/user/changepassword/:name",(req,res)=>{
+  console.log(req.params);
+  res.send("working to change password");
+})
+
+app.get("/user/feedback/:name",(req,res)=>{
+  console.log(req.params);
+  res.send("working to feedback");
+})
+
+
+
+
+
+
 app.get("*",(req,res)=>{
   res.send("page not found");
 })
@@ -465,4 +521,4 @@ app.get("*",(req,res)=>{
 app.listen("8080",()=>{
   console.log("the server is lestining on port 8080");
 })
-// define local and try
+//user_in_db

@@ -26,9 +26,14 @@
               <a class="nav-link active" aria-current="page" href="/user/newpost">Add new Post</a>
               <a class="nav-link currname" href="#"><%= currUser.username %></a>
               <a class="nav-link" href="/logout">logout</a>
-            
+              <div class="nav-link ms-auto account"  >
+                <form method="get" action="/user/account" >
+                  <button>Account</button>
+                </form>
+              </div>
             </div>
           </div>
+        
         </div>
       </nav>
   </div>
@@ -40,8 +45,8 @@
 
             <div class="box">
             <button class="btn btn-custom"><i class="fa-regular fa-heart"></i>&nbsp;Like</button>
-
-           <%if(user.username == currUser.username){%>
+              &bbrk;
+            <%if(user.username == currUser.username){%>
             <form method="get" action="/user/delete">
                 <button class="btn btn-danger">Delete</button>
               </form>
