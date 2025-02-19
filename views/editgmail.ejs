@@ -12,12 +12,19 @@
         <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
             <h1 class="text-center text-primary">Add Gmail</h1>
             
-            <form method="post" action="/user/editgmail/:name">
+            <form method="post" action="/user/addgmail/:name">
                 <% if (error_msg.length > 0) { %>
                     <div class="alert alert-danger">
                       <%= error_msg %>
                     </div>
                   <% } %>
+
+                  <% if (success_msg.length > 0) { %>
+                    <div class="alert alert-success">
+                      <%= success_msg %>
+                    </div>
+                  <% } %>
+
                 <div class="mb-3">
                     <label class="form-label fw-bold">Add new Gmail</label>
                     <input type="text" class="form-control" name ="Gmail"

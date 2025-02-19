@@ -523,27 +523,69 @@ app.post("/user/editusername/:name", (req, res) => {
   });
 });
 
-
+//update gmail
 app.get("/user/addgmail/:name",(req,res)=>{
   let name=req.params;
   console.log(name,"line no 483")
   res.render("editgmail.ejs",name)
 })
 
-app.post("/user/addgmail/:name",(req,res)=>{
-  const { Gmail,newPassword } = req.body; // Extract new username
-  console.log("line 535",Gmail,password)
-  let currUser=req.session.currUser;
-  //console.log(currUser)
-  if(newPassword != currUser.password){
-    req.flash("error","Wroung password");
-    return res.redirect("/user/addgmail/:name");
+app.post("/user/addgmail/:name", (req, res) => {
+  const { Gmail, newPassword } = req.body; // Extract Gmail & new password
+  console.log("Received Gmail update request.");
+  console.log("Gmail:", Gmail, "Password:", newPassword);
+
+  let currUser = req.session.currUser;
+  
+  if (!currUser || !currUser.username) {
+      return res.status(401).send("Unauthorized: User session not found.");
   }
-  const oldUsername = currUser.username ;
-  console.log("old username",oldUsername)
+
+  let username = currUser.username;
+  let oldGmail = currUser.email;
+
+  if (!Gmail) {
+      req.flash("error", "Please enter a valid Gmail.");
+      return res.redirect("/user/addgmail/" + username);
+  }
+
+  console.log("Old Gmail:", oldGmail);
+
+  // Step 1: Verify user exists
   const q = `SELECT * FROM user WHERE username = ?`;
- 
-})
+  connection.query(q, [username], (err, result) => {
+      if (err) {
+          console.error("Database error:", err);
+          return res.status(500).send("Error when fetching user.");
+      }
+
+      if (result.length === 0) {
+          req.flash("error", "User not found.");
+          return res.redirect("/user/addgmail/" + username);
+      }
+
+      // Step 2: Update Gmail
+      const updateQuery = `UPDATE user SET email = ? WHERE username = ?`;
+      connection.query(updateQuery, [Gmail, username], (updateErr, updateResult) => {
+          if (updateErr) {
+              console.error("Update error:", updateErr);
+              return res.status(500).send("Error updating Gmail.");
+          }
+
+          console.log("Gmail updated successfully!");
+
+          // Step 3: Update session with new email
+          req.session.currUser.email = Gmail;
+          
+          req.flash("success", "Gmail updated successfully.");
+
+         res.redirect("/user/account")
+
+          })
+      });
+  });
+
+
 app.get("/user/changepassword/:name",(req,res)=>{
   console.log(req.params);
   res.send("working to change password");

@@ -37,6 +37,11 @@
         </div>
       </nav>
   </div>
+  <% if(success_msg.length > 0){ %>
+    <div class="alert alert-success">
+    <%= success_msg %> 
+  </div>
+  <% } %>
     <div class="container">
         <h2 class="text-center mb-4">Thoughts of the day</h2>
         <% for (let user of Alluser) { %>
