@@ -410,20 +410,7 @@ app.post("/user/postpage",async (req,res)=>{
       res.send("there is an err in the database");
     }
 })
-// app.get("/user/postpage",async (req,res)=>{
-//   try{
-//     let q=`select * from user`;
-//     connection.query(q,(err,Alluser)=>{
-//       if(err)throw err;
-//      // console.log(Alluser);
-//     res.render("postPage.ejs",{Alluser});  
-//     });
-//   }
-//     catch(err){
-//       console.log("err");
-//       res.send("there is an err in the database");
-//     }
-// })
+
 
 //delete rout
 app.get("/user/delete",(req,res)=>{
@@ -489,16 +476,74 @@ app.get("/user/account",(req,res)=>{
 // accounts forms
 
 app.get("/user/editusername/:name",(req,res)=>{
-  console.log(req.params);
-  res.send("working to editusername");
+  let name=req.params;
+  console.log(name,"line no 483")
+  res.render("editUsername.ejs",name)
 })
+app.post("/user/editusername/:name", (req, res) => {
+  const { username,newPassword } = req.body; // Extract new username
+  //console.log("line 485",username,password)
+  let currUser=req.session.currUser;
+  //console.log(currUser)
+  if(newPassword != currUser.password){
+    req.flash("error","Wroung password");
+    return res.redirect("/user/editusername/:name");
+  }
+  const oldUsername = currUser.username ;
+  console.log("old username",oldUsername)
+  const q = `SELECT * FROM user WHERE username = ?`;
+
+  connection.query(q, [oldUsername], (err, result) => {
+      if (err) {
+          console.error("Database error:", err);
+          return res.status(500).send("Error fetching user.");
+      }
+
+      // Update the username
+      const updateQuery = `UPDATE user SET username = ? WHERE username = ?`;
+      connection.query(updateQuery, [username ,oldUsername], (updateErr, updateResult) => {
+          if (updateErr) {
+              console.error("Update error:", updateErr);
+              return res.status(500).send("Error updating username.");
+          }
+
+          console.log("Username updated successfully!");
+          console.log(updateResult)
+          
+          req.session.currUser.username=username;//updating session
+
+            let q=`select * from user`;
+            connection.query(q,(err,Alluser)=>{
+             // console.log(Alluser);
+            res.render("postPage.ejs",{Alluser});  
+            });
+          
+       
+      });
+  });
+});
 
 
 app.get("/user/addgmail/:name",(req,res)=>{
-  console.log(req.params);
-  res.send("working to user gmail");
+  let name=req.params;
+  console.log(name,"line no 483")
+  res.render("editgmail.ejs",name)
 })
 
+app.post("/user/addgmail/:name",(req,res)=>{
+  const { Gmail,newPassword } = req.body; // Extract new username
+  console.log("line 535",Gmail,password)
+  let currUser=req.session.currUser;
+  //console.log(currUser)
+  if(newPassword != currUser.password){
+    req.flash("error","Wroung password");
+    return res.redirect("/user/addgmail/:name");
+  }
+  const oldUsername = currUser.username ;
+  console.log("old username",oldUsername)
+  const q = `SELECT * FROM user WHERE username = ?`;
+ 
+})
 app.get("/user/changepassword/:name",(req,res)=>{
   console.log(req.params);
   res.send("working to change password");
